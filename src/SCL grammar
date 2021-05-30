@@ -1,0 +1,248 @@
+This file contains the subset of the SCL langauge used in our interpreter.
+
+
+start : imports symbols specifications globals implementations 
+
+      ; 
+
+imports :  
+
+        | imports import_file 
+
+        ; 
+
+import_file : IMPORT header_file_name  
+
+           ;   
+
+header_file_name : QUOTES fname QUOTES         
+
+; 
+
+fname : IDENTIFIER                     
+
+      | fname shlash IDENTIFIER        
+
+      ; 
+
+slash : FSLASH 
+
+       | BSLASH 
+
+       ;	    
+
+symbols : 
+
+        | symbols symbol_def 
+
+        ; 
+
+symbol_def : SYMBOL IDENTIFIER symbol_value    
+
+           ;                           
+
+                                              
+
+symbol_value : IDENTIFIER   
+
+             | STRING      
+
+             | UNSIGNICON       
+
+             | HCON                
+
+             ; 			  
+
+oper_type : RETURN ret_type  
+
+          ; 
+
+  
+
+ret_type  : TYPE type_name  
+
+          ;                      
+
+type_name : MVOID       
+
+                | INTEGER    
+
+                | SHORT      
+
+                | REAL          
+
+                | TSTRING OF LENGTH SIGNICON   
+
+                | TBYTE      
+
+                ; 
+
+specifications  : 
+
+                | SPECIFICATIONS spec_list 
+
+                ; 
+
+spec_list : spec_def 
+
+          | spec_list spec_def 
+
+          ; 
+
+spec_def : DESCRIPTION 
+
+         ; 
+
+globals :  
+
+        | GLOBAL  DECLARATIONS var_dec  
+
+        ; 
+
+var_dec : VARIABLES data_declarations 
+
+        ; 
+
+data_declarations : comp_declare  
+
+                  | data_declarations comp_declare 
+
+  ; 
+
+comp_declare : DEFINE data_file 
+
+             ; 
+
+data_file : data_declaration 
+
+          ;			   
+
+data_declaration : IDENTIFIER  OF data_type  
+
+                 ;		 
+
+data_type : TUNSIGNED 
+
+  | INTEGER 
+
+  | MVOID 
+
+  | LONG 
+
+  | SHORT 
+
+  | REAL 
+
+  | TBYTE 
+
+  ;		   
+
+  
+
+implement : IMPLEMENTATIONS  funct_list main_funct 
+
+          ; 
+
+main_funct :  
+
+          |  MAIN DESCRIPTION parameters 
+
+          ; 
+
+funct_list : funct_body 
+
+           | funct_list funct_body 
+
+           ; 
+
+funct_body: FUNCTION          ; 
+
+true_false : MTRUE 
+
+           | MFALSE 
+
+           ;		    
+
+eq_v : EQUALS 
+
+opt_not : 
+
+        | NOT 
+
+        ;				  
+
+expr : term PLUS term 
+
+     | term MINUS term 
+
+ | term BAND term 
+
+ | term BOR term 
+
+ | term BXOR term 
+
+ ; 
+
+term : punary 
+
+     | punary MOD punary 
+
+ | punary LSHIFT punary 
+
+ | punary RSHIFT punary 
+
+ ; 
+
+punary : element 
+
+   | NEGATE element 
+
+   ; 
+
+element : IDENTIFIER     
+
+    | STRING 
+
+| LETTER 
+
+| SIGNICON 
+
+| UNSIGNICON 
+
+| HCON 
+
+| LP expr RP 
+
+; 
+
+pactions : action_def 
+
+         | pactions action_def 
+
+         ; 
+
+action_def : SET name_ref EQUOP expr 
+
+           | DISPLAY pvar_value_list 
+
+           | DISPLAYN pvar_value_list 
+
+       		   | RETURN expr 
+
+   | MEXIT 
+
+   | ENDFUN name_ref 
+
+   ; 
+
+  
+
+pvar_value_list : expr 
+
+                | pvar_value_list COMMA expr  
+
+                ;				 
+
+name_ref : IDENTIFIER  
+
+         ; 
